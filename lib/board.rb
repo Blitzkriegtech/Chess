@@ -58,4 +58,14 @@ class Board
   def stalemate?(color)
     !in_check?(color) && no_legal_moves?(color)
   end
+
+  # prepare board state for serialization
+  def to_h
+    {
+      grid: serialized_grid,
+      current_player: @current_player,
+      en_passant_target: @en_passant_target,
+      move_history: serialized_move_history
+    }
+  end
 end
