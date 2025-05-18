@@ -24,6 +24,11 @@ class Board
   end
 
   def move_piece(from, to)
-    
+    # checks for illegal moves, if it is raise an error otherwise execute the move
+    # then switch player after a successful move
+    validate_move(from, to)
+    execute_move(from, to)
+    switch_player
+    true # indicates successful move
   end
 end
