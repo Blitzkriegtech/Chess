@@ -48,4 +48,9 @@ class Board
       end
     end
   end
+
+  # checkmate checker
+  def checkmate?(color)
+    in_check?(color) && no_legal_moves?(color)
+  end
 end
