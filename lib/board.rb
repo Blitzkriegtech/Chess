@@ -53,4 +53,9 @@ class Board
   def checkmate?(color)
     in_check?(color) && no_legal_moves?(color)
   end
+
+  # stalemate checker
+  def stalemate?(color)
+    !in_check?(color) && no_legal_moves?(color)
+  end
 end
