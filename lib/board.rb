@@ -68,4 +68,24 @@ class Board
       move_history: serialized_move_history
     }
   end
+
+  # method call for board state restoration from deserialized data
+  def self.from_h(data)
+    raise InvalidSaveError, 'Invalid save data format (not Hash)' unless data.is_a?(Hash)
+
+    # data validation
+    unless data[:grid].is_a?(Array) && data[:grid].all? { |row| row.is_a?(Array) }
+      raise InvalidSaveError, "Loaded data 'grid' is not a 2D Array."
+    end
+
+    unless [:white, :black].include?(data[:current_player]&.to_sym)
+      raise InvalidSaveError, "Loaded data 'current_player' is invalid."
+    end
+
+    # create a new board instance
+    board = allocate
+    board.send(:initialize_from_save, data) # call a custom initialization method
+
+    board
+  end
 end
