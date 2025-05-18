@@ -13,4 +13,17 @@ class Board
     @en_passant_target = nil # Tracks en passant oppotunities
     setup_pieces # Only set up pieces on a new game, not when loading
   end
+
+  # method call for a new game
+  def start_new_game
+    @grid = Array.new(8) { Array.new(8) } # Reset grid
+    @move_history = []
+    @current_player = :white
+    @en_passant_target = nil
+    setup_pieces
+  end
+
+  def move_piece(from, to)
+    
+  end
 end
