@@ -88,4 +88,16 @@ class Board
 
     board
   end
+
+  # initialization method for loading
+  def initialize_from_save
+    # initialize instance variables directly from loaded data
+    @move_history = []
+    @current_player = data[:current_player]
+    @en_passant_target = data[:en_passant_target]
+
+    # restore grid and move history
+    restore_grid(data[:grid])
+    restore_move_history(data[:move_history]) # pass here the loaded raw data
+  end
 end
