@@ -100,4 +100,59 @@ class Board
     restore_grid(data[:grid])
     restore_move_history(data[:move_history]) # pass here the loaded raw data
   end
+
+  # restore grid from serialized data
+  def restore_grid(grid_data)
+    # 2D arry checker
+    unless grid_data.is_?(Array) && grid_data.all? { |row| row.is_a?(Array) }
+      puts "WARNING: Invalid grid data format. Expected 2D Array. \nResetting grid."
+      @grid = Array.new(8) { Array.new(8) }
+      return
+    end
+
+    @grid = Array.new(8) { Array.new(8) } # Re-initialize grid with empty squares
+
+    grid.data.each_with_index do |row, i|
+      row.each_with_index do |piece_data, j|
+        next unless piece_data.is_a?(Hash) # skips nil or non-hash entries
+
+        begin
+          piece_class_name = piece_data[:class]
+          color_data = piece_data[:color]
+          moved_data = piece_data[:moved]
+
+          unless piece_class_name.is_a?(String) && [:white, :black].include?(color_data&.to_sym) && [true, false, nil].include?(moved_data)
+            puts "WARNING: Skipping invalid piece data format at #{[i, j]}: #{piece_data.inspect}"
+            self[[i, j]] = nil
+            next
+          end
+
+          # safely get the class constant using Object.const_get
+          piece_class = Object.const_get(piece_class_name)
+
+          unless piece_class.is_a?(Class) && piece_class.ancestors.include?(Piece)
+            puts "WARNING: Invalid piece class name '#{piece_class_name}' at #{[i, j]} - not a valid Piece class."
+            self[[i, j]] = nil
+            next
+          end
+
+          # create the piece instance
+          piece = piece_class.new(color_data.to_sym)
+
+          # restore 'moved' state with default value of false if nil or not true
+          piece.moved = moved_data == true # only set to true if it was explicitly true
+            
+          selfp[[i, j]] = piece # place the restored piece on the board
+        
+        rescue NameError
+        puts "ERROR: Invalid piece class name '#{piece_class_name}' at #{[i, j]}. Piece skipped."
+        self[[i, j]] = nil
+        rescue => e 
+          puts "ERROR restoring piece at #{[i, j]}: #{e.message}. Piece skipped."
+          puts e.backtrace.join("\n") # Log backtrace for debuggin purposes
+          self[[i, j]] = nil # ensures board doesn't get corrupted
+        end  
+      end
+    end
+  end
 end
