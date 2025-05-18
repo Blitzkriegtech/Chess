@@ -31,4 +31,21 @@ class Board
     switch_player
     true # indicates successful move
   end
+
+  # Method call for checking if KING is currently in check for both WHITE & BLACK
+  def in_check?(color)
+    king_pos = find_king(color)
+    opponent_color = color == :white ? :black : :white # determing opponent color
+
+    # check through entire opponent pieces if any attacks the king
+    grid.each_with_index.any? do |row, i|
+      row.each_with_index.any? do |piece, j|
+        # skip tiles/square with piece of same color or empty
+        next unless piece && piece.color == opponent_color
+
+        # use the piece's #attaks? to check if it attakcs the king's square
+        piece.attacks?(self, [i, j], king_pos)
+      end
+    end
+  end
 end
