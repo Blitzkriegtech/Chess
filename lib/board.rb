@@ -391,7 +391,76 @@ class Board
       row_pieces.each_with_index.all? do |piece, j|
         # skip if tile is empty or has opponent's color
         next true unless piece && piece.color == color
+
+        from = [i , j]
+
+        piece.valid_moves(self, from).none? do |to|
+          !move_leaves_king_in_check?(from, to)
+        end
       end
     end
-  end  
+  end
+
+  def move_leaves_king_in_check?(from , to)
+    # create a deep copy of the board state to simulate the move w/o affecting the actual board
+    begin
+      test_board_grid = Marshal.load(Marshal.dump(@grid))
+    rescue => e
+      puts "Error creating deep copy of grid using Marshal: #{e.message}."
+      raise 'Failed to create test board copy for check validation.'    
+    end
+
+    test_board = Board.allocate
+    test_board.instance_variable_set(:@grid, test_board_grid)
+    test_board.instance_variable_set(:@current_player, @current_player)
+    test_board.instance_variable_set(:@en_passant_target, @en_passant_target)
+
+    test_piece = test_board[from]
+    unless test_piece
+      puts "WARNING: move_leaves_king_in_check? called with no piece at simulation 'from' position #{from.inspect}"
+      return true
+    end
+
+    # 1. Simulate en passant capture if applicable *before* moving the attacking pawn.
+    if test_piece.is_a?(Pawn) && to == test_board.en_passant_target
+      captured_pos = [from[0], to[1]]
+      test_board[captured_pos] = nil # remove the captured pawn in the simulation
+    end
+
+    # 2. Simulate castling rook movement if applicable *before* moving the king.
+    # Check if the piece is a King and the move is a 2-square horizontal move (indicative of castling).
+    if test_piece.is_a?(King) && (from[1] - to[1]).abs == 2
+      row = from[0] # King's rank
+      if to[1] == 6 # Kingside castling
+        rook_from = [row, 7]
+        rook_to = [row, 5]
+      elsif to[1] == 2 # Queenside castling
+        rook_from = [row, 0]
+        rook_to = [row, 3]
+      else
+        # Should not happen if King#valid_moves is correct, but a safeguard.
+        puts "WARNING: Simulation of castling called for non-castling king move #{from.inspect}-#{to.inspect}"
+        # Continue simulation without moving a rook if it's not a standard castling destination.
+        rook_from = nil # Ensure rook move is skipped
+      end
+
+       # Simulate the rook move on the test board if rook positions were determined
+      if rook_from && rook_to
+        test_rook = test_board[rook_from]
+        if test_rook.is_a?(Rook) # Ensure there's actually a rook to move in simulation
+          test_board[rook_to] = test_rook
+          test_board[rook_from] = nil
+        else
+          puts "WARNING: Simulation expected a rook at #{rook_from.inspect} for castling but found #{test_rook.inspect}."
+          # Continue simulation, but the castling visual/logic might be off.
+        end
+      end
+    end
+
+    # 3. Simulate the main piece movement (King or other piece).
+    test_board.move_chess_piece!([from, to])
+
+    # --- Check if the king is in check on the test board after the simulated move ---
+    test_board.in_check?(@current_player)    
+  end
 end
