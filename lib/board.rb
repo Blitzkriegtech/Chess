@@ -248,4 +248,44 @@ class Board
       raise CheckError, 'Move would leave your king in check.'
     end
   end
+
+  # execute a valid move, update the board state and game history
+  def execute_move(from, to)
+    piece = self[from] # the piece being moved
+    captured_piece = self[to] # piece at the point of destination (might be nil)
+
+    # handle en passant capture before moving the attacking pawn
+    if piece.is_a?(Pawn) && to == @en_passant_target
+      # captured pawn is on the attacker's starting row, at the destination col
+      captured_pos = [from[0], to[1]]
+      captured_piece = self[captured_pos] # get the captured pawn instance
+      self[captured_pos] = nil # remove the captured pawn from the board
+    end
+
+    # Handle castling rook movement *before* moving the king, as it's part of the same "move"
+    # Check if the piece is a King and it's a 2-square horizontal move (indicative of castling)
+    if piece.is_a?(King) && (from[1] - to[1]).abs == 2
+      perform_castling_rook_move(from, to) # move the rook during castling
+    end
+
+    # move the main piece on the board
+    move_chess_piece!([from, to]) # updates the grid
+    self[to].marked_move # marks the piece as moved ( now at the 'to' tile/square )
+
+    # Check for pawn promotion *after* the move is executed
+    # If the piece at the destination is a pawn and reached the opposite back rank, promote it.
+    promote_pawn(to)
+    
+    # update move history
+    @move_history << {
+      from: from,
+      to: to,
+      piece: piece.class.name,
+      color: piece.color,
+      captured: captured_piece&.class&.name,
+      en_passant_target_before: @en_passant_target,
+      # flag if this move was a castling move
+      castling: piece.is_a?(King) && (from[1] - to[1]).abs == 2
+    }
+  end
 end
