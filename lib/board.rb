@@ -241,5 +241,11 @@ class Board
         raise InvalidMoveError, "Invalid move for #{piece.class} from #{from.inspect} to #{to.inspect}. Destination is not reachable."
       end
     end
+
+    # check the gen. rule: the move must not leave the king in check.
+    # includes checking castling rules
+    if move_leaves_king_in_check?(from, to)
+      raise CheckError, 'Move would leave your king in check.'
+    end
   end
 end
