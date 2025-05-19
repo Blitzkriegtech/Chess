@@ -155,4 +155,27 @@ class Board
       end
     end
   end
+
+  # restore move history from serialized data
+  def restore_move_history(move_history_data)
+    # check the input if its array, default to empty if nil
+    unless move_history_data.nil? || move_history_data.is_a?(Array)
+      puts "WARNING: Invalid move history data format. Expected Array or nil, got #{move_history_data.class}.\nResseting history."
+      @move_history = []
+      return
+    end
+    
+    @move_history = (move_history_data || []).map do |move|
+      unless move.is_a?(Hash)
+        puts "WARNING: Skipping invalid move history entry formate: #{move.inspect}"
+        next nil # Skipt invalid entries
+      end
+
+      # restore the hash, ensuring color is a symbol if present
+      restored_move = move.dup # create copy to avoid modifying the original data
+      restored_move[:color] = restored_move[:color]&.to_sym
+
+      restored_move
+    end.compact # remove any nil entries resulting from skipping invalid ones
+  end
 end
