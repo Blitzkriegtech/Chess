@@ -472,4 +472,8 @@ class Board
     end
     raise "Error: No #{color} king found on the board. Invalid game state."
   end
+
+  def switch_player
+    @current_player = @current_player == :white ? :black : :white
+  end
 end
