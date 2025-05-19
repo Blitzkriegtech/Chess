@@ -214,4 +214,32 @@ class Board
       self[[7, col]] = piece_class.new(:white) # row 7
     end
   end
+
+  # check moves if it is legal accrding to chess rules (excluding checks)
+  # this is called by move_piece before executing the move.
+  def validate_move(from, to)
+    # add bounds checking (from and to)
+    unless from.is_a?(Array) && from.length == 2 && from.all? { |coord| coord.between?(0, 7) } &&
+      to.is_a?(Array) && to.length == 2 && to.all? { |coord| coord.between?(0, 7) }
+
+      raise InvalidInputError, "Move coordinates are out of bounds/Invalid format: #{from.inspect}-#{to.inspect}"
+    end
+
+    piece = self[from] # piece at the starting pos
+    raise InvalidMoveError, "No piece at #{from.inspect}" unless piece # piece must be @ 'from'
+    raise InvalidMoveError, "It's not your turn. Move a #{current_player} piece." if piece.color != current_player
+
+    valid_moves = piece.valid_moves(self, from)
+    # check if the destination is in the list of valid moves for this piece
+    unless valid_moves.include?(to)
+      target_piece = self[to]
+      if target_piece && target_piece.color == piece.color
+        raise InvalidMoveError, "Cannot capture your own piece at #{to.inspect}."
+      elsif target_piece && target_piece.color != piece.color 
+        raise InvalidMoveError, "Path is blocked or invalid capture for #{piece.class} from #{from.inspect} to #{to.inspect}."
+      else # epmty tile/square, but not in valid_moves
+        raise InvalidMoveError, "Invalid move for #{piece.class} from #{from.inspect} to #{to.inspect}. Destination is not reachable."
+      end
+    end
+  end
 end
