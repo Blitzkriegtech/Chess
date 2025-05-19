@@ -178,4 +178,19 @@ class Board
       restored_move
     end.compact # remove any nil entries resulting from skipping invalid ones
   end
+
+  # prepare grid for serialization
+  def serialized_grid
+    @grid.map do |row|
+      row.map do |piece|
+        next unless piece # keep nil entries for empty tiles/squares
+
+        {
+          class: piece.class.name, # store class name as str
+          color: piece.color, # store color symbol (:white or :black)
+          moved: piece.moved # store moved state boolean
+        }
+      end
+    end
+  end
 end
