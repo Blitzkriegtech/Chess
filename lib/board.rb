@@ -384,4 +384,14 @@ class Board
     row_number = 8 - row
     "#{column_letter}#{row_number}"
   end
+
+  # Check if the current player has any legal moves
+  def no_legal_moves?(color)
+    grid.each_with_index.all? do |row_pieces, i|
+      row_pieces.each_with_index.all? do |piece, j|
+        # skip if tile is empty or has opponent's color
+        next true unless piece && piece.color == color
+      end
+    end
+  end  
 end
