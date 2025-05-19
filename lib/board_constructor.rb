@@ -7,4 +7,9 @@ class BoardConstructor
   def initialize(board)
     @board = board
   end
+
+  # update the board instance (used after loading)
+  def update_board(new_board)
+    @board = new_board
+  end
 end
