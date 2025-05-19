@@ -287,5 +287,39 @@ class Board
       # flag if this move was a castling move
       castling: piece.is_a?(King) && (from[1] - to[1]).abs == 2
     }
+
+    # Update en passant target *after* the current move.
+    # The target is only set if a pawn moves two squares.
+    @en_passant_target = nil # reset the target @ the start of the next turn
+    if self[to].is_a?(Pawn) && (from[0] - to[0]).abs == 2
+            @en_passant_target = [(from[0] + to[0]) / 2, from[1]]
+    end    
+  end
+
+  def perform_castling_rook_move(king_from, king_to)
+    row = king_from[0]
+    # determine rook's start and end pos based on king's to
+    if king_to[1] == 6 # kingside castling
+      rook_from = [row, 7]
+      rook_to = [row, 5]
+    elsif king_to[1] == 2 # queenside castling
+      rook_from = [row, 0]
+      rook_to = [row, 3]
+    else
+      puts "WARNING: perform_castling_rook_move called for non-castling king move #{king_from}-#{king_to}."
+      return # do nothing if it's not a recognized castling move
+    end
+
+    rook = self[rook_from]
+    # double check that there is a rook at the expected position
+    unless rook.is_a?(Rook)
+      puts "ERROR: Expected a rook at #{rook_from.inspect} for castling, but found #{rook.inspect}."
+      return
+    end
+
+    # move the rook using the general move method
+    move_chess_piece!([rook_from, rook_to])
+    # mark the moved rook
+    self[rook_to].marked_move
   end
 end
