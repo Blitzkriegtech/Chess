@@ -193,4 +193,25 @@ class Board
       end
     end
   end
+
+  def serialized_move_history
+    @move_history # stores serializable data ( data of hashes )
+  end
+
+  private
+
+  def setup_pieces
+    # Rank & Filers
+    8.times do |col|
+      self[[1, col]] = Pawn.new(:black)
+      self[[6, col]] = Pawn.new(:white)
+    end
+
+    # Executives
+    back_row_classes = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    back_row_classes.each_with_index do |piece_class, col|
+      self[[0, col]] = piece_class.new(:black) # row 0
+      self[[7, col]] = piece_class.new(:white) # row 7
+    end
+  end
 end
