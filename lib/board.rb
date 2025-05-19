@@ -476,4 +476,25 @@ class Board
   def switch_player
     @current_player = @current_player == :white ? :black : :white
   end
+
+  # Check if a given square [row, col] is currently under attack by the specified attacker color.
+  # This method is used for check/checkmate detection and castling validation.
+  # This method is public because Piece instances need to call it to validate moves.
+
+  public
+
+  def square_under_attack?(position, attacker_color)
+    unless position.is_a?(Array) && position.length == 2 && position.all? { |coord| coord.between?(0, 7) }
+      puts "WARNING: square_under_attack? called with invalid position: #{position.inspect}"
+      return false # an invalid pos cannot be under attack
+    end
+
+    grid.each_with_index.any? do |row, i|
+      row.each_with_index.any? do |piece, j|
+        next unless piece && piece.color == attacker_color
+
+        piece.attacks?(self, [i, j], position)
+      end
+    end
+  end
 end
