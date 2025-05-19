@@ -463,4 +463,13 @@ class Board
     # --- Check if the king is in check on the test board after the simulated move ---
     test_board.in_check?(@current_player)    
   end
+
+  def find_king(color)
+    grid.each_with_index do |row, i|
+      row.each_with_index do |piece, j|
+        return [i, j] if piece.is_a?(King) && piece.color == color
+      end
+    end
+    raise "Error: No #{color} king found on the board. Invalid game state."
+  end
 end
