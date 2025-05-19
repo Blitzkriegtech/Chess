@@ -373,4 +373,15 @@ class Board
     self[position] = piece_class.new(pawn.color)
     puts "Pawn at #{algebraic_coord(position)} promoted to #{piece_class.name}!"
   end
+
+  # convert board coordinates [row, col] ot algebraic notation
+  def algebraic_coord(position)
+    row, col = position
+    
+    return nil unless row.between?(0, 7) && col.between?(0, 7)
+    
+    column_letter = ('a'.ord + col).chr
+    row_number = 8 - row
+    "#{column_letter}#{row_number}"
+  end
 end
