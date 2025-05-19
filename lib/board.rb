@@ -497,4 +497,9 @@ class Board
       end
     end
   end
+
+  # Determine the opponent's color based on the current player
+  def opponent_color
+    current_player == :white ? :black : :white
+  end
 end
