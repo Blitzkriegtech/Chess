@@ -322,4 +322,55 @@ class Board
     # mark the moved rook
     self[rook_to].marked_move
   end
+
+  # handles pawn promotion logic
+  def promote_pawn(position)
+    pawn = self[position]
+    return unless pawn.is_a?(Pawn)
+
+    # determine the promotion rank based on the pawn's color
+    promotion_rank = pawn.color == :white ? 0 : 7
+    return unless position[0] == promotion_rank # ensure it's on the correct end rank
+
+    puts "Pawn promotion! Your #{pawn.color.capitalize} pawn at #{algebraic_coord(position)} can be promoted."
+    puts 'Choose piece (Q)ueen, (R)ook, (B)ishop, (N)Knight:'
+
+    piece_class = nil
+    loop do
+      print 'Enter choice (Q, R, B, N): '
+      choice = gets&.chomp&.upcase
+
+      # handle empty input or Ctrl+D (default to quenn)
+      if choice.nil? || choice.empty?
+        puts 'No input received. Defaulting to Queen.'
+        piece_class = Queen
+        break
+      end
+  
+      case choice
+      when 'Q', 'q', 'queen', 'Queen', 'QUEEN'
+        piece_class = Queen
+        break
+      when 'R', 'r', 'rook', 'ROOK', 'Rook'
+        piece_class = Rook
+        break
+      when 'B', 'b', 'bishop', 'Bishop', 'BISHOP'
+        piece_class = Bishop
+        break
+      when 'N', 'n', 'knight', 'KNIGHT', 'Knight'
+        piece_class = Knight
+        break
+      when 'K', 'k', 'King', 'king', 'KING'
+        puts 'Cannot promote to a King. Please choose Q, R, B, or N.'
+        next
+      else
+        puts "Invalid choice '#{choice}'. Please choose Q, R, B, or N."
+        next
+      end
+    end
+
+    # Replace the pawn with the new piece of the same colo
+    self[position] = piece_class.new(pawn.color)
+    puts "Pawn at #{algebraic_coord(position)} promoted to #{piece_class.name}!"
+  end
 end
