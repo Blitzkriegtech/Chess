@@ -63,4 +63,11 @@ class King < Piece
     end
     moves # return the list of valid moves
   end
+
+  def attacks?(_board, from, target)
+    row, col = from
+    target_row, target_col = target
+    # king attacks any adjacent square
+    (row - target_row).abs <= 1 && (col - target_col).abs <= 1
+  end
 end
