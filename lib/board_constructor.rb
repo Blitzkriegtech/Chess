@@ -44,4 +44,9 @@ class BoardConstructor
     border = CORNER_TL + (HORIZONTAL * TILE_WIDTH) + CORNER_TR
     puts border
   end
+
+  def print_bottom_border
+    border = CORNER_BL + (HORIZONTAL * TILE_WIDTH) + CORNER_BR
+    puts border
+  end
 end
