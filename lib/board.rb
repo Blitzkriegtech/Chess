@@ -98,7 +98,7 @@ class Board
   end
 
   # initialization method for loading
-  def initialize_from_save
+  def initialize_from_save(data)
     # initialize instance variables directly from loaded data
     @move_history = []
     @current_player = data[:current_player].to_sym
