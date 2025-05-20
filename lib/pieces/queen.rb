@@ -20,7 +20,7 @@ class Queen < Piece
         if target_piece.nil?
           moves << [row, col]
         elsif target_piece.color != color
-          moves << [row, color]
+          moves << [row, col]
           break
         else
           break
