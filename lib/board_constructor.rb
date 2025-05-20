@@ -49,4 +49,17 @@ class BoardConstructor
     border = CORNER_BL + (HORIZONTAL * TILE_WIDTH) + CORNER_BR
     puts border
   end
+
+  def construct_row(board_row)
+    TILE_HEIGHT.times do |line|
+      row_data = 8.times.map do |col|
+        background = (board_row + col).even? ? 107 : 100 # use ANSII codes directly
+        cell_content(board_row, col, line, background)
+      end.join
+
+      # show row number only on mid line
+      row_number = line == TILE_HEIGHT / 2 ? " #{ROW_NUMBERS[board_row]}" : ''
+      puts "#{VERTICAL}#{row_data}#{VERTICAL}#{row_number}"
+    end
+  end
 end
