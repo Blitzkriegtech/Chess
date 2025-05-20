@@ -52,7 +52,7 @@ class King < Piece
       queenside_rook = board[queenside_rook_pos]
 
       if queenside_rook.is_a?(Rook) && !queenside_rook.moved
-        if board[[castling_row, 1]].nil? && board[[castling_row], 2].nil? && board[[castling_row, 3]].nil?
+        if board[[castling_row, 1]].nil? && board[[castling_row], 2].nil? && board[[castling_row], 3].nil?
           unless board.square_under_attack?([castling_row, 4], board.opponent_color) || # king's initial pos
             board.square_under_attack?([castling_row, 3], board.opponent_color) ||
             board.square_under_attack?([castling_row, 2], board.opponent_color)
