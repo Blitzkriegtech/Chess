@@ -19,4 +19,10 @@ class ChessParser
     puts "Error parsing input: #{e.message}"
     raise InvalidInputError, 'An unexpected error occured during input parsing.'
   end
+
+  def self.algebraic_to_coords(position)
+    col = position[0].downcase.ord - 'a'.ord # ensuring lowercase for calculation
+    row = 8 - position[1].to_i
+    [row, col]
+  end
 end
