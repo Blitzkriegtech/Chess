@@ -29,4 +29,25 @@ class Bishop < Piece
     end
     moves
   end
+
+  def attacks?(board, from, target)
+    row, col = from
+    target_row, target_col = target
+
+    return false unless (row - target_row).abs == (col - target_col).abs
+
+    step_row = row < target_row ? 1 : -1
+    step_col = col < target_col ? 1 : -1
+
+    row += step_row
+    col += step_col
+
+    while (row != target_row) || (col != target_col)
+      return false unless board[[row, col]].nil?
+
+      row += step_row
+      col += step_col
+    end
+    true
+  end
 end
