@@ -112,7 +112,7 @@ class Board
   # restore grid from serialized data
   def restore_grid(grid_data)
     # 2D arry checker
-    unless grid_data.is_?(Array) && grid_data.all? { |row| row.is_a?(Array) }
+    unless grid_data.is_a?(Array) && grid_data.all? { |row| row.is_a?(Array) }
       puts "WARNING: Invalid grid data format. Expected 2D Array. \nResetting grid."
       @grid = Array.new(8) { Array.new(8) }
       return
