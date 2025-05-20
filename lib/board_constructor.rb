@@ -32,4 +32,11 @@ class BoardConstructor
     print_bottom_border
     print_col_letters
   end
+
+  private
+
+  def print_col_letters
+    header = COL_LETTERS.map { |ltr| ltr.center(TILE_WIDTH) }.join
+    puts ' ' * (VERTICAL.length) + '' * (TILE_WIDTH / 2) + header # adjusted spacing
+  end
 end
