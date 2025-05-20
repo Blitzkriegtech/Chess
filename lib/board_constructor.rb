@@ -69,11 +69,11 @@ class BoardConstructor
              piece ? piece.symbol.center(TILE_WIDTH) : ' '.center(TILE_WIDTH)
            else
              ' '.center(TILE_WIDTH)
-
-             # White pieces in bright white (97), black pieces in black (30)
-             fg_code = @board[[board_row, col]]&.color == :white ? 97 : 30
-
-             "\e[#{fg_code};#{background_code}m#{text}\e[0m"
            end
+
+    # White pieces in bright white (97), black pieces in black (30)
+    fg_code = @board[[board_row, col]]&.color == :white ? 97 : 30
+
+    "\e[#{fg_code};#{background_code}m#{text}\e[0m"
   end
 end
