@@ -152,7 +152,7 @@ class Board
           # restore 'moved' state with default value of false if nil or not true
           piece.moved = moved_data == true # only set to true if it was explicitly true
 
-          selfp[[i, j]] = piece # place the restored piece on the board
+          self[[i, j]] = piece # place the restored piece on the board
         rescue NameError
           puts "ERROR: Invalid piece class name '#{piece_class_name}' at #{[i, j]}. Piece skipped."
           self[[i, j]] = nil

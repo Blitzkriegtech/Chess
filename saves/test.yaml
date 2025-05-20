@@ -27,7 +27,9 @@
 - - :class: Pawn
     :color: :black
     :moved: false
-  - 
+  - :class: Pawn
+    :color: :black
+    :moved: false
   - :class: Pawn
     :color: :black
     :moved: false
@@ -47,9 +49,7 @@
     :color: :black
     :moved: false
 - - 
-  - :class: Pawn
-    :color: :black
-    :moved: true
+  - 
   - 
   - 
   - 
@@ -128,8 +128,10 @@
   - :class: Rook
     :color: :white
     :moved: false
-:current_player: :white
-:en_passant_target: 
+:current_player: :black
+:en_passant_target:
+- 5
+- 4
 :move_history:
 - :from:
   - 6
@@ -141,17 +143,4 @@
   :color: :white
   :captured: 
   :en_passant_target_before: 
-  :castling: false
-- :from:
-  - 1
-  - 1
-  :to:
-  - 2
-  - 1
-  :piece: Pawn
-  :color: :black
-  :captured: 
-  :en_passant_target_before:
-  - 5
-  - 4
   :castling: false
