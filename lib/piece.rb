@@ -16,4 +16,8 @@ class Piece
   def mark_moved
     @moved = true
   end
+
+  def symbol
+    raise NotImplementedError, "#{self.class} must implement the 'symbol' method."
+  end
 end
