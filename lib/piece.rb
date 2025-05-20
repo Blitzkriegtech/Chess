@@ -6,6 +6,14 @@ class Piece
   attr_accessor :moved # boolean, move tracker
 
   def initialize(color)
-    
+    unless [:white, :black].include?(color)
+      raise ArgumentError, "Invalid piece color: #{color}. Must be :white or :black."
+    end
+    @color = color
+    @moved = false # pieces start unmoved
+  end
+
+  def mark_moved
+    @moved = true
   end
 end
