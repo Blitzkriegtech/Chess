@@ -9,7 +9,7 @@ require 'yaml'
 class Game
   SAVE_DIR = 'saves' # directory for save files
 
-  def  initialize
+  def initialize
     @board = Board.new
     @renderer = BoardConstructor.new(@board)
   end
@@ -37,7 +37,7 @@ class Game
     rescue Interrupt # allows quitting with Ctrl + C
       puts "\nGame interrupted. Exiting."
       break
-    rescue => e # in case any unexpected error occurs
+    rescue StandardError => e # in case any unexpected error occurs
       puts "An unexpected error occured: #{e.message}"
       puts e.backtrace.join("\n") # for debug purposes
       break # exits the game completely
@@ -61,7 +61,7 @@ class Game
       # dump
       File.write(full_path, YAML.dump(board_data))
       puts "Game saved SUCESSFULLY to #{full_path}"
-    rescue => e
+    rescue StandardError => e
       puts "ERROR saving game to #{full_path}: #{e.message}"
     end
   end
@@ -79,8 +79,9 @@ class Game
     # list allowed classes for YAML safe_loading
     permitted_classes = [
       Symbol, Hash, Array, String, Integer, Float, TrueClass, FalseClass, NilClass,
-      Pawn, Rook, Knight, Bishop, Queen, King ]
-    
+      Pawn, Rook, Knight, Bishop, Queen, King
+    ]
+
     begin
       # read the file
       yaml_string = File.read(full_path)
@@ -101,7 +102,7 @@ class Game
       # Catch validation errors from Board.from_h or within load_game
       puts 'ERROR LOADING GAME: Invalid save file format.'
       puts e.message
-    rescue => e
+    rescue StandardError => e
       puts 'An unexpected error occurred during game loading:'
       puts e.message
       puts e.backtrace.join("\n")
@@ -141,9 +142,9 @@ class Game
       puts "Invalid action: #{e.message}"
     rescue InvalidSaveError => e
       puts "LOAD FAILED: #{e.message}"
-    rescue => e
+    rescue StandardError => e
       puts "An unexpected error occurred during turn processing: #{e.message}"
-      puts e.backtrace.join("\n")      
+      puts e.backtrace.join("\n")
     end
   end
 end

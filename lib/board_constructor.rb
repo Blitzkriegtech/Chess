@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # board renderer class
-module BoardConstructor
+class BoardConstructor
   attr_reader :board
 
   def initialize(board)
@@ -41,12 +41,12 @@ module BoardConstructor
   end
 
   def print_top_border
-    border = CORNER_TL + (HORIZONTAL * TILE_WIDTH) + CORNER_TR
+    border = CORNER_TL + (HORIZONTAL * TILE_WIDTH * 8) + CORNER_TR
     puts border
   end
 
   def print_bottom_border
-    border = CORNER_BL + (HORIZONTAL * TILE_WIDTH) + CORNER_BR
+    border = CORNER_BL + (HORIZONTAL * TILE_WIDTH * 8) + CORNER_BR
     puts border
   end
 
