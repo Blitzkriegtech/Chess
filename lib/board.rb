@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'board_general'
+require_relative 'errors'
+require_relative 'piece'
+require_relative 'pieces/bishop'
+require_relative 'pieces/king'
+require_relative 'pieces/knight'
+require_relative 'pieces/pawn'
+require_relative 'pieces/queen'
+require_relative 'pieces/rook'
 #  monitors and updates the state of the board
 class Board
   include BoardGeneral
