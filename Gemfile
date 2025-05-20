@@ -7,3 +7,5 @@ source "https://rubygems.org"
 gem "pry", "~> 0.15.2"
 
 gem "rspec", "~> 3.13"
+
+gem "rubocop", "~> 1.75"
