@@ -43,4 +43,26 @@ class Game
       break # exits the game completely
     end
   end
+
+  # save current game state (YAML)
+  def save_game(filename)
+    Dir.mkdir(SAVE_DIR) unless Dir.exist?(SAVE_DIR)
+
+    # sanitze filename
+    sanitized = filename.gsub(/[^\w-]/, '_').downcase
+    sanitized = sanitized[0..50]
+    sanitized = "game_#{Time.now.strftime('%Y%m%d_%H%M%S')}" if sanitized.empty?
+
+    full_path = File.join(SAVE_DIR, "#{sanitized}.yaml")
+
+    begin
+      # gets the serialazible data (board)
+      board_data = @board.to_h
+      # dump
+      File.write(full_path, YAML.dump(board_data))
+      puts "Game saved SUCESSFULLY to #{full_path}"
+    rescue => e
+      puts "ERROR saving game to #{full_path}: #{e.message}"
+    end
+  end
 end
