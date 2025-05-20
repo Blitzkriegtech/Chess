@@ -12,4 +12,16 @@ class BoardConstructor
   def update_board(new_board)
     @board = new_board
   end
+
+  # constants for constructing the board
+  COL_LETTERS = [*('a'..'h')].freeze
+  ROW_NUMBERS = [*('1'..'8')].reverse.freeze
+  TILE_WIDTH = 8
+  TILE_HEIGHT = 3
+  VERTICAL = '│'
+  HORIZONTAL = '─'
+  CORNER_TL = '┌'
+  CORNER_TR = '┐'
+  CORNER_BL = '└'
+  CORNER_BR = '┘'
 end
