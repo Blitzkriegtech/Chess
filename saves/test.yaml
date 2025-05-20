@@ -1,8 +1,6 @@
 ---
 :grid:
-- - :class: Queen
-    :color: :white
-    :moved: false
+- - 
   - 
   - 
   - :class: Rook
@@ -36,8 +34,8 @@
   - :class: Pawn
     :color: :black
     :moved: false
-- - :class: Knight
-    :color: :black
+- - :class: Queen
+    :color: :white
     :moved: true
   - 
   - :class: Pawn
@@ -120,7 +118,7 @@
     :moved: true
   - 
   - 
-:current_player: :white
+:current_player: :black
 :en_passant_target: 
 :move_history:
 - :from:
@@ -391,5 +389,16 @@
   :piece: King
   :color: :black
   :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 0
+  - 0
+  :to:
+  - 2
+  - 0
+  :piece: Queen
+  :color: :white
+  :captured: Knight
   :en_passant_target_before: 
   :castling: false
