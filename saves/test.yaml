@@ -3,12 +3,8 @@
 - - :class: Rook
     :color: :black
     :moved: false
-  - :class: Knight
-    :color: :black
-    :moved: false
-  - :class: Bishop
-    :color: :black
-    :moved: false
+  - 
+  - 
   - :class: Queen
     :color: :black
     :moved: false
@@ -27,31 +23,35 @@
 - - :class: Pawn
     :color: :black
     :moved: false
+  - :class: Bishop
+    :color: :black
+    :moved: true
   - :class: Pawn
     :color: :black
     :moved: false
-  - :class: Pawn
-    :color: :black
-    :moved: false
-  - :class: Pawn
-    :color: :black
-    :moved: false
-  - :class: Pawn
-    :color: :black
-    :moved: false
-  - :class: Pawn
-    :color: :black
-    :moved: false
-  - :class: Pawn
-    :color: :black
-    :moved: false
-  - :class: Pawn
-    :color: :black
-    :moved: false
-- - 
   - 
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+- - :class: Knight
+    :color: :black
+    :moved: true
+  - :class: Pawn
+    :color: :black
+    :moved: true
   - 
-  - 
+  - :class: Pawn
+    :color: :black
+    :moved: true
   - 
   - 
   - 
@@ -80,8 +80,12 @@
   - 
   - 
   - 
-  - 
-  - 
+  - :class: Pawn
+    :color: :white
+    :moved: true
+  - :class: Knight
+    :color: :white
+    :moved: true
 - - :class: Pawn
     :color: :white
     :moved: false
@@ -98,9 +102,9 @@
   - :class: Pawn
     :color: :white
     :moved: false
-  - :class: Pawn
+  - :class: Bishop
     :color: :white
-    :moved: false
+    :moved: true
   - :class: Pawn
     :color: :white
     :moved: false
@@ -116,22 +120,16 @@
   - :class: Queen
     :color: :white
     :moved: false
-  - :class: King
-    :color: :white
-    :moved: false
-  - :class: Bishop
-    :color: :white
-    :moved: false
-  - :class: Knight
-    :color: :white
-    :moved: false
+  - 
   - :class: Rook
     :color: :white
-    :moved: false
+    :moved: true
+  - :class: King
+    :color: :white
+    :moved: true
+  - 
 :current_player: :black
-:en_passant_target:
-- 5
-- 4
+:en_passant_target: 
 :move_history:
 - :from:
   - 6
@@ -144,3 +142,93 @@
   :captured: 
   :en_passant_target_before: 
   :castling: false
+- :from:
+  - 1
+  - 1
+  :to:
+  - 2
+  - 1
+  :piece: Pawn
+  :color: :black
+  :captured: 
+  :en_passant_target_before:
+  - 5
+  - 4
+  :castling: false
+- :from:
+  - 6
+  - 6
+  :to:
+  - 5
+  - 6
+  :piece: Pawn
+  :color: :white
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 0
+  - 2
+  :to:
+  - 1
+  - 1
+  :piece: Bishop
+  :color: :black
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 7
+  - 5
+  :to:
+  - 6
+  - 6
+  :piece: Bishop
+  :color: :white
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 0
+  - 1
+  :to:
+  - 2
+  - 0
+  :piece: Knight
+  :color: :black
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 7
+  - 6
+  :to:
+  - 5
+  - 7
+  :piece: Knight
+  :color: :white
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 1
+  - 3
+  :to:
+  - 2
+  - 3
+  :piece: Pawn
+  :color: :black
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 7
+  - 4
+  :to:
+  - 7
+  - 6
+  :piece: King
+  :color: :white
+  :captured: 
+  :en_passant_target_before: 
+  :castling: true

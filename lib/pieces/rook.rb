@@ -13,7 +13,7 @@ class Rook < Piece
       row, col = from
       loop do
         row += dr
-        col += col
+        col += dc
         break unless row.between?(0, 7) && col.between?(0, 7)
 
         target_piece = board[[row, col]]
@@ -36,8 +36,16 @@ class Rook < Piece
 
     return false unless row == target_row || col == target_col
 
-    step_row = row == target_row ? 0 : (row < target_row ? 1 : -1)
-    step_col = row == target_col ? 0 : (row < target_row ? 1 : -1)
+    step_row = if row == target_row
+                 0
+               else
+                 (row < target_row ? 1 : -1)
+               end
+    step_col = if col == target_col
+                 0
+               else
+                 (col < target_col ? 1 : -1)
+               end
 
     r, c = from
     loop do
