@@ -36,8 +36,16 @@ class Queen < Piece
 
     # check horizontal and vertical
     if row == target_row || col == target_col
-      step_row = row == target_row ? 0 : (row < target_row ? 1 : -1)
-      step_col = col == target_col ? 0 : (col < target_col ? 1 : -1)
+      step_row = if row == target_row
+                   0
+                 else
+                   (row < target_row ? 1 : -1)
+                 end
+      step_col = if col == target_col
+                   0
+                 else
+                   (col < target_col ? 1 : -1)
+                 end
 
       r, c = from # temp variables use for traversal
       loop do
@@ -64,7 +72,7 @@ class Queen < Piece
         c += step_col
         break unless r.between?(0, 7) && c.between?(0, 7)
 
-        return true if r == target_row && c ==  target_col
+        return true if r == target_row && c == target_col
 
         return false unless board[[r, c]].nil?
       end
