@@ -1,0 +1,155 @@
+---
+:grid:
+- - :class: Rook
+    :color: :black
+    :moved: false
+  - :class: Knight
+    :color: :black
+    :moved: false
+  - :class: Bishop
+    :color: :black
+    :moved: false
+  - :class: Queen
+    :color: :black
+    :moved: false
+  - :class: King
+    :color: :black
+    :moved: false
+  - :class: Bishop
+    :color: :black
+    :moved: false
+  - :class: Knight
+    :color: :black
+    :moved: false
+  - :class: Rook
+    :color: :black
+    :moved: false
+- - :class: Pawn
+    :color: :black
+    :moved: false
+  - 
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+  - :class: Pawn
+    :color: :black
+    :moved: false
+- - 
+  - :class: Pawn
+    :color: :black
+    :moved: true
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - :class: Pawn
+    :color: :white
+    :moved: true
+  - 
+- - :class: Pawn
+    :color: :white
+    :moved: false
+  - :class: Pawn
+    :color: :white
+    :moved: false
+  - :class: Pawn
+    :color: :white
+    :moved: false
+  - :class: Pawn
+    :color: :white
+    :moved: false
+  - :class: Pawn
+    :color: :white
+    :moved: false
+  - :class: Pawn
+    :color: :white
+    :moved: false
+  - 
+  - :class: Pawn
+    :color: :white
+    :moved: false
+- - :class: Rook
+    :color: :white
+    :moved: false
+  - :class: Knight
+    :color: :white
+    :moved: false
+  - :class: Bishop
+    :color: :white
+    :moved: false
+  - :class: Queen
+    :color: :white
+    :moved: false
+  - :class: King
+    :color: :white
+    :moved: false
+  - :class: Bishop
+    :color: :white
+    :moved: false
+  - :class: Knight
+    :color: :white
+    :moved: false
+  - :class: Rook
+    :color: :white
+    :moved: false
+:current_player: :white
+:en_passant_target: 
+:move_history:
+- :from:
+  - 6
+  - 6
+  :to:
+  - 5
+  - 6
+  :piece: Pawn
+  :color: :white
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false
+- :from:
+  - 1
+  - 1
+  :to:
+  - 2
+  - 1
+  :piece: Pawn
+  :color: :black
+  :captured: 
+  :en_passant_target_before: 
+  :castling: false

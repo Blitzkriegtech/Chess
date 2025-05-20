@@ -331,7 +331,7 @@ class Board
     # move the rook using the general move method
     move_chess_piece!([rook_from, rook_to])
     # mark the moved rook
-    self[rook_to].marked_move
+    self[rook_to].mark_moved
   end
 
   # handles pawn promotion logic
