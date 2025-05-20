@@ -281,7 +281,7 @@ class Board
 
     # move the main piece on the board
     move_chess_piece!([from, to]) # updates the grid
-    self[to].marked_move # marks the piece as moved ( now at the 'to' tile/square )
+    self[to].mark_move # marks the piece as moved ( now at the 'to' tile/square )
 
     # Check for pawn promotion *after* the move is executed
     # If the piece at the destination is a pawn and reached the opposite back rank, promote it.
