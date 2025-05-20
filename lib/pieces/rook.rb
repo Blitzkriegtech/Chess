@@ -36,6 +36,8 @@ class Rook < Piece
 
     return false unless row == target_row || col == target_col
 
+    return false if from == target # cannot attack the square it's already on
+
     step_row = if row == target_row
                  0
                else
@@ -51,7 +53,7 @@ class Rook < Piece
     loop do
       r += step_row
       c += step_col
-      break unless r.between?(0, 7) && c.between(0, 7)
+      break unless r.between?(0, 7) && c.between?(0, 7)
 
       return true if r == target_row && c == target_col
 
