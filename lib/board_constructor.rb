@@ -39,4 +39,9 @@ class BoardConstructor
     header = COL_LETTERS.map { |ltr| ltr.center(TILE_WIDTH) }.join
     puts ' ' * (VERTICAL.length) + '' * (TILE_WIDTH / 2) + header # adjusted spacing
   end
+
+  def print_top_border
+    border = CORNER_TL + (HORIZONTAL * TILE_WIDTH) + CORNER_TR
+    puts border
+  end
 end
