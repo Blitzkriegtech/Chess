@@ -86,10 +86,10 @@ class Game
       # read the file
       yaml_string = File.read(full_path)
       # load
-      laoded_data = YAML.safe_load(yaml_string, permitted_classes: permitted_classes, aliases: true)
+      loaded_data = YAML.safe_load(yaml_string, permitted_classes: permitted_classes, aliases: true)
 
       # use the Board.from_h class method to create a new board instance
-      new_board = Board.from_h(laoded_data)
+      new_board = Board.from_h(loaded_data)
       # replace current board and update the renderer with new board instance
       @board = new_board
       @renderer.update_board(@board)
