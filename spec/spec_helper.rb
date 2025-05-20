@@ -95,7 +95,7 @@ RSpec.configure do |config|
   #   Kernel.srand config.seed
   require_relative '../lib/game'
   require_relative '../lib/board'
-  require_relative '../bin/main'
+  # require_relative '../bin/main'
   require_relative '../lib/board_constructor'
   require_relative '../lib/piece'
   require_relative '../lib/chess_parser'
