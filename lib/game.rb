@@ -49,7 +49,7 @@ class Game
     Dir.mkdir(SAVE_DIR) unless Dir.exist?(SAVE_DIR)
 
     # sanitze filename
-    sanitized = filename.gsub(/[^\w-]/, '_').downcase
+    sanitized = filename.gsub(/[^\w-]/, '_').downcase # Allows letters, numbers, underscore, hyphen
     sanitized = sanitized[0..50]
     sanitized = "game_#{Time.now.strftime('%Y%m%d_%H%M%S')}" if sanitized.empty?
 
@@ -63,6 +63,49 @@ class Game
       puts "Game saved SUCESSFULLY to #{full_path}"
     rescue => e
       puts "ERROR saving game to #{full_path}: #{e.message}"
+    end
+  end
+
+  # load a game state from a YAML file
+  def load_game(filename)
+    sanitized = filename.gsub(/[^\w-]/, '_').downcase
+    sanitized = sanitized[0..50]
+    full_path = File.join(SAVE_DIR, "#{sanitized}.yaml")
+
+    unless File.exist?(full_path)
+      raise InvalidInputError, "Save file '#{filename}' not found in the '#{SAVE_DIR}' directory."
+    end
+
+    # list allowed classes for YAML safe_loading
+    permitted_classes = [
+      Symbol, Hash, Array, String, Integer, Float, TrueClass, FalseClass, NilClass,
+      Pawn, Rook, Knight, Bishop, Queen, King ]
+    
+    begin
+      # read the file
+      yaml_string = File.read(full_path)
+      # load
+      laoded_data = YAML.safe_load(yaml_string, permitted_classes: permitted_classes, aliases: true)
+
+      # use the Board.from_h class method to create a new board instance
+      new_board = Board.from_h(laoded_data)
+      # replace current board and update the renderer with new board instance
+      @board = new_board
+      @renderer.update_board(@board)
+      puts "Game loaded SUCCESSFULLY! from #{full_path}"
+    rescue Psych::DisallowedClass => e
+      puts 'SECURITY ERROR: Save file contains invalid or disallowed data. Loading failed.'
+      puts e.message
+      raise InvalidSaveError, 'Save file contains disallowed classes.'
+    rescue InvalidSaveError => e
+      # Catch validation errors from Board.from_h or within load_game
+      puts 'ERROR LOADING GAME: Invalid save file format.'
+      puts e.message
+    rescue => e
+      puts 'An unexpected error occurred during game loading:'
+      puts e.message
+      puts e.backtrace.join("\n")
+      raise 'Failed to load game due to an unexpected error.'
     end
   end
 end
