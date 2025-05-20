@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'board_renderer'
+require_relative 'board_general'
 #  monitors and updates the state of the board
 class Board
   include BoardGeneral
@@ -78,7 +78,7 @@ class Board
       raise InvalidSaveError, "Loaded data 'grid' is not a 2D Array."
     end
 
-    unless [:white, :black].include?(data[:current_player]&.to_sym)
+    unless %i[white black].include?(data[:current_player]&.to_sym)
       raise InvalidSaveError, "Loaded data 'current_player' is invalid."
     end
 
@@ -121,7 +121,9 @@ class Board
           color_data = piece_data[:color]
           moved_data = piece_data[:moved]
 
-          unless piece_class_name.is_a?(String) && [:white, :black].include?(color_data&.to_sym) && [true, false, nil].include?(moved_data)
+          unless piece_class_name.is_a?(String) && %i[white
+                                                      black].include?(color_data&.to_sym) && [true, false,
+                                                                                              nil].include?(moved_data)
             puts "WARNING: Skipping invalid piece data format at #{[i, j]}: #{piece_data.inspect}"
             self[[i, j]] = nil
             next
@@ -141,17 +143,16 @@ class Board
 
           # restore 'moved' state with default value of false if nil or not true
           piece.moved = moved_data == true # only set to true if it was explicitly true
-            
+
           selfp[[i, j]] = piece # place the restored piece on the board
-        
         rescue NameError
-        puts "ERROR: Invalid piece class name '#{piece_class_name}' at #{[i, j]}. Piece skipped."
-        self[[i, j]] = nil
-        rescue => e 
+          puts "ERROR: Invalid piece class name '#{piece_class_name}' at #{[i, j]}. Piece skipped."
+          self[[i, j]] = nil
+        rescue StandardError => e
           puts "ERROR restoring piece at #{[i, j]}: #{e.message}. Piece skipped."
           puts e.backtrace.join("\n") # Log backtrace for debuggin purposes
           self[[i, j]] = nil # ensures board doesn't get corrupted
-        end  
+        end
       end
     end
   end
@@ -164,7 +165,7 @@ class Board
       @move_history = []
       return
     end
-    
+
     @move_history = (move_history_data || []).map do |move|
       unless move.is_a?(Hash)
         puts "WARNING: Skipping invalid move history entry formate: #{move.inspect}"
@@ -220,7 +221,7 @@ class Board
   def validate_move(from, to)
     # add bounds checking (from and to)
     unless from.is_a?(Array) && from.length == 2 && from.all? { |coord| coord.between?(0, 7) } &&
-      to.is_a?(Array) && to.length == 2 && to.all? { |coord| coord.between?(0, 7) }
+           to.is_a?(Array) && to.length == 2 && to.all? { |coord| coord.between?(0, 7) }
 
       raise InvalidInputError, "Move coordinates are out of bounds/Invalid format: #{from.inspect}-#{to.inspect}"
     end
@@ -235,18 +236,20 @@ class Board
       target_piece = self[to]
       if target_piece && target_piece.color == piece.color
         raise InvalidMoveError, "Cannot capture your own piece at #{to.inspect}."
-      elsif target_piece && target_piece.color != piece.color 
-        raise InvalidMoveError, "Path is blocked or invalid capture for #{piece.class} from #{from.inspect} to #{to.inspect}."
+      elsif target_piece && target_piece.color != piece.color
+        raise InvalidMoveError,
+              "Path is blocked or invalid capture for #{piece.class} from #{from.inspect} to #{to.inspect}."
       else # epmty tile/square, but not in valid_moves
-        raise InvalidMoveError, "Invalid move for #{piece.class} from #{from.inspect} to #{to.inspect}. Destination is not reachable."
+        raise InvalidMoveError,
+              "Invalid move for #{piece.class} from #{from.inspect} to #{to.inspect}. Destination is not reachable."
       end
     end
 
     # check the gen. rule: the move must not leave the king in check.
     # includes checking castling rules
-    if move_leaves_king_in_check?(from, to)
-      raise CheckError, 'Move would leave your king in check.'
-    end
+    return unless move_leaves_king_in_check?(from, to)
+
+    raise CheckError, 'Move would leave your king in check.'
   end
 
   # execute a valid move, update the board state and game history
@@ -275,7 +278,7 @@ class Board
     # Check for pawn promotion *after* the move is executed
     # If the piece at the destination is a pawn and reached the opposite back rank, promote it.
     promote_pawn(to)
-    
+
     # update move history
     @move_history << {
       from: from,
@@ -291,9 +294,9 @@ class Board
     # Update en passant target *after* the current move.
     # The target is only set if a pawn moves two squares.
     @en_passant_target = nil # reset the target @ the start of the next turn
-    if self[to].is_a?(Pawn) && (from[0] - to[0]).abs == 2
-            @en_passant_target = [(from[0] + to[0]) / 2, from[1]]
-    end    
+    return unless self[to].is_a?(Pawn) && (from[0] - to[0]).abs == 2
+
+    @en_passant_target = [(from[0] + to[0]) / 2, from[1]]
   end
 
   def perform_castling_rook_move(king_from, king_to)
@@ -346,7 +349,7 @@ class Board
         piece_class = Queen
         break
       end
-  
+
       case choice
       when 'Q', 'q', 'queen', 'Queen', 'QUEEN'
         piece_class = Queen
@@ -377,9 +380,9 @@ class Board
   # convert board coordinates [row, col] ot algebraic notation
   def algebraic_coord(position)
     row, col = position
-    
+
     return nil unless row.between?(0, 7) && col.between?(0, 7)
-    
+
     column_letter = ('a'.ord + col).chr
     row_number = 8 - row
     "#{column_letter}#{row_number}"
@@ -392,7 +395,7 @@ class Board
         # skip if tile is empty or has opponent's color
         next true unless piece && piece.color == color
 
-        from = [i , j]
+        from = [i, j]
 
         piece.valid_moves(self, from).none? do |to|
           !move_leaves_king_in_check?(from, to)
@@ -401,13 +404,13 @@ class Board
     end
   end
 
-  def move_leaves_king_in_check?(from , to)
+  def move_leaves_king_in_check?(from, to)
     # create a deep copy of the board state to simulate the move w/o affecting the actual board
     begin
       test_board_grid = Marshal.load(Marshal.dump(@grid))
-    rescue => e
+    rescue StandardError => e
       puts "Error creating deep copy of grid using Marshal: #{e.message}."
-      raise 'Failed to create test board copy for check validation.'    
+      raise 'Failed to create test board copy for check validation.'
     end
 
     test_board = Board.allocate
@@ -444,7 +447,7 @@ class Board
         rook_from = nil # Ensure rook move is skipped
       end
 
-       # Simulate the rook move on the test board if rook positions were determined
+      # Simulate the rook move on the test board if rook positions were determined
       if rook_from && rook_to
         test_rook = test_board[rook_from]
         if test_rook.is_a?(Rook) # Ensure there's actually a rook to move in simulation
@@ -461,7 +464,7 @@ class Board
     test_board.move_chess_piece!([from, to])
 
     # --- Check if the king is in check on the test board after the simulated move ---
-    test_board.in_check?(@current_player)    
+    test_board.in_check?(@current_player)
   end
 
   def find_king(color)
