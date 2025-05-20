@@ -5,7 +5,7 @@ This is a command-line interface (CLI) chess game. You'll interact with the game
 
 **1. Starting the Game:**
 
-* Run the main game script from your terminal. (This will be the `play_chess.rb` or similar file).
+* Run the main game script from your terminal. (This will be the `main.rb` or similar file).
 * A new game will start automatically (unless you choose to load one). White moves first.
 
 **2. Making a Move:**
