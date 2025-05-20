@@ -24,4 +24,12 @@ class BoardConstructor
   CORNER_TR = '┐'
   CORNER_BL = '└'
   CORNER_BR = '┘'
+
+  def construct_board
+    print_col_letters
+    print_top_border
+    8.times { |row| construct_row(row) }
+    print_bottom_border
+    print_col_letters
+  end
 end
