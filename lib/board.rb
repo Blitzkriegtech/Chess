@@ -101,7 +101,7 @@ class Board
   def initialize_from_save
     # initialize instance variables directly from loaded data
     @move_history = []
-    @current_player = data[:current_player]
+    @current_player = data[:current_player].to_sym
     @en_passant_target = data[:en_passant_target]
 
     # restore grid and move history
