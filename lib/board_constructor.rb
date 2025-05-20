@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # board renderer class
-class BoardConstructor
+module BoardConstructor
   attr_reader :board
 
   def initialize(board)
@@ -37,7 +37,7 @@ class BoardConstructor
 
   def print_col_letters
     header = COL_LETTERS.map { |ltr| ltr.center(TILE_WIDTH) }.join
-    puts ' ' * (VERTICAL.length) + '' * (TILE_WIDTH / 2) + header # adjusted spacing
+    puts ' ' * VERTICAL.length + '' * (TILE_WIDTH / 2) + header # adjusted spacing
   end
 
   def print_top_border
@@ -65,15 +65,15 @@ class BoardConstructor
 
   def cell_content(board_row, col, line, background_code)
     text = if line == TILE_HEIGHT / 2
-      piece = @board[[board_row, col]]
-      piece ? piece.symbol.center(TILE_WIDTH) : ' '.center(TILE_WIDTH)
-    else
-      ' '.center(TILE_WIDTH)
+             piece = @board[[board_row, col]]
+             piece ? piece.symbol.center(TILE_WIDTH) : ' '.center(TILE_WIDTH)
+           else
+             ' '.center(TILE_WIDTH)
 
-    # White pieces in bright white (97), black pieces in black (30)
-    fg_code = @board[[board_row, col]]&.color == :white ? 97 : 30
+             # White pieces in bright white (97), black pieces in black (30)
+             fg_code = @board[[board_row, col]]&.color == :white ? 97 : 30
 
-    "\e[#{fg_code};#{background_code}m#{text}\e[0m"
-    end
+             "\e[#{fg_code};#{background_code}m#{text}\e[0m"
+           end
   end
 end
