@@ -120,7 +120,7 @@ class Board
 
     @grid = Array.new(8) { Array.new(8) } # Re-initialize grid with empty squares
 
-    grid.data.each_with_index do |row, i|
+    grid_data.each_with_index do |row, i|
       row.each_with_index do |piece_data, j|
         next unless piece_data.is_a?(Hash) # skips nil or non-hash entries
 
