@@ -108,4 +108,42 @@ class Game
       raise 'Failed to load game due to an unexpected error.'
     end
   end
+
+  private
+
+  # handle player input and command execution (save, load, move)
+  def handle_turn
+    puts "#{@board.current_player.capitalize}'s turn."
+    print "Enter move (e.g., 'e2-e4'), 'save <name>', or 'load <name>': "
+    input = gets&.chomp # & is used to handle potetial nil from Ctrl + D
+
+    # handle empty input/Ctrl + D
+    if input.nil? || input.empty?
+      puts "\nNO INPUT recieved. EXITING GAME."
+      exit
+    end
+
+    begin
+      command = ChessParser.parse(input)
+
+      case command[:command]
+      when :move
+        @board.move_piece(command[:from], command[:to])
+      when :save
+        save_game(command[:filename])
+      when :load
+        load_game(command[:filename])
+      else
+        raise InvalidInputError, "UNKWON COMMAND: #{input}"
+      end
+    rescue InvalidInputError, InvalidMoveError, CheckError => e
+      # Catch known errors and print message. Loop will continue.
+      puts "Invalid action: #{e.message}"
+    rescue InvalidSaveError => e
+      puts "LOAD FAILED: #{e.message}"
+    rescue => e
+      puts "An unexpected error occurred during turn processing: #{e.message}"
+      puts e.backtrace.join("\n")      
+    end
+  end
 end
